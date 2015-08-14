@@ -1,12 +1,10 @@
 File.open('input.txt').each_line do |line|
   numbers = line.scan(/-?\d+/)
 
-  def distance(numbers, index_1, index_2)
-    numbers[index_1].to_i - numbers[index_2].to_i
-  end
+  x1, y1, x2, y2 = *numbers.map! {|number| number.to_i }
 
-  x = distance(numbers, 0, 2)
-  y = distance(numbers, 1, 3)
+  vector_x = x1 - x2
+  vector_y = y1 - y2
 
-  puts Math.sqrt((x**2) + (y**2)).to_i
+  puts Math.sqrt((vector_x**2) + (vector_y**2)).to_i
 end
