@@ -1,9 +1,13 @@
 class DistanceCalculation < Struct.new(:x1, :y1, :x2, :y2)
   def distance
-    Math.sqrt((vector_x**2) + (vector_y**2)).to_i
+    vector_z.to_i
   end
 
   private
+
+  def vector_z
+    Math.sqrt((vector_x**2) + (vector_y**2))
+  end
 
   def vector_x
     x1 - x2
