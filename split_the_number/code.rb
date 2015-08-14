@@ -1,25 +1,45 @@
+class Computation < Struct.new(:numbers, :characters)
+
+  def to_s
+    result.to_s
+  end
+
+  def result
+    first_number.send(math_operator, second_number)
+  end
+
+  private
+
+  def math_operator
+    characters[character_operator_index]
+  end
+
+  def character_operator_index
+    characters.index { |character| character.match(/\W/) }
+  end
+
+  def first_number
+    number(first_number_range)
+  end
+
+  def first_number_range
+    0..character_operator_index
+  end
+
+  def second_number
+    number(second_number_range)
+  end
+
+  def number(range)
+    numbers.slice(range).join.to_i
+  end
+
+  def second_number_range
+    character_operator_index..numbers.length
+  end
+end
 
 File.open('input.txt').each_line do |line|
-  line = line.split(' ')
-  numbers = line[0]
-  characters = line[1].split('')
-
-  def non_word_characters(array)
-    array.map do |chars|
-      chars.match(/\W/)
-    end.join('')
-  end
-
-  def index_of_characters(characters)
-    characters.index(non_word_characters(characters))
-  end
-
-  def split_the_numbers(characters, numbers)
-    z = index_of_characters(characters)
-    a = (numbers.slice(0, z)).to_i
-    b = (numbers.slice(z, numbers.length)).to_i
-    a.send(non_word_characters(characters),b)
-  end
-
-  puts split_the_numbers(characters, numbers)
+  numbers, characters = *line.split(' ').map { |element| element.split('') }
+  puts Computation.new(numbers, characters)
 end
