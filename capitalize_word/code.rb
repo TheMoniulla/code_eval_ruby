@@ -1,11 +1,9 @@
-File.open('input.txt').each_line do |line|
-  def capitalize_word(array)
-    array.map do |word|
-      word[0] = word[0].capitalize
-      word
-    end.join(' ')
+class Capitalizer < Struct.new(:words)
+  def capitalize_words
+    words.map { |word| word[0].capitalize << word[1..-1] }.join(' ')
   end
+end
 
-  words = line.split(' ')
-  puts(capitalize_word(words))
+File.open('input.txt').each_line do |line|
+  puts Capitalizer.new(line.split(' ')).capitalize_words
 end

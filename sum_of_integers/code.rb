@@ -1,5 +1,2 @@
-sum = 0
-File.open('input.txt').each_line do |line|
-  sum += line.to_i
-end
-puts(sum)
+lines = File.open('input.txt').lines
+puts lines.map(&:to_i).reduce(:+)

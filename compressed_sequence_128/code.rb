@@ -1,16 +1,39 @@
-File.open('input.txt').each_line do |line|
-  array = line.split(' ')
-  element = nil
-  result = []
-  
-  array.each do |number|
-    if element != number
-      result << [1, number]
-    else
-      result.last[0] = result.last[0] + 1
-    end
-    element = number
+class CompressedSequence < Struct.new(:numbers)
+  def to_s
+    compressed.join(' ')
   end
 
-  puts result.join(' ')
+  private
+
+  def compressed
+    numbers.inject([]) do |stack, number|
+      number_exactly_as_previous?(number, stack) ? stack.last.increment : stack.push(Stats.new(number))
+      stack
+    end
+  end
+
+  def number_exactly_as_previous?(number, stack)
+    stack.last && stack.last.number == number
+  end
+
+  class Stats
+    attr_reader :number
+
+    def initialize(number)
+      @number = number
+      @counter = 1
+    end
+
+    def increment
+      @counter += 1
+    end
+
+    def to_s
+      [@counter, number].join(' ')
+    end
+  end
+end
+
+File.open('input.txt').each_line do |line|
+  puts CompressedSequence.new(line.split(' ').map(&:to_i))
 end

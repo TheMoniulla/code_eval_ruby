@@ -1,13 +1,9 @@
-File.open('input.txt').each_line do |line|
-  words = line.strip.split(' ')
-
-  def longest_word(words)
-    longestword = ''
-    words.each do |word|
-      longestword = word if word.length > longestword.length
-    end
-    longestword
+class LongestWord < Struct.new(:words)
+  def to_s
+    words.max { |a, b| a.length <=> b.length }
   end
+end
 
-  puts(longest_word(words))
+File.open('input.txt').each_line do |line|
+  puts LongestWord.new(line.strip.split(' '))
 end

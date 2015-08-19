@@ -1,17 +1,28 @@
+class LettercasePercentageRatio
+  attr_reader :string, :string_length
+
+  def initialize(string)
+    @string = string
+    @string_length = string.length
+  end
+
+  def to_s
+    lower = percentage(findcase(/[a-z]/))
+    upper = percentage(findcase(/[A-Z]/))
+    'lowercase: ' + lower + ' uppercase: ' + upper
+  end
+
+  private
+
+  def findcase(regex)
+    string.select { |letter| letter.match(regex) }
+  end
+
+  def percentage(array)
+    sprintf '%.2f', (array.size * 100 / string_length).round(2)
+  end
+end
+
 File.open('input.txt').each_line do |line|
-  string = line.strip.split('')
-  total_length = string.length
-
-  def findcase(letters, regex)
-    letters.map { |letter| letter.match(regex) }
-  end
-
-  def percentage(array, total_length)
-    sprintf "%.2f", (array.join('').length.to_f * 100 / total_length.to_f).round(2)
-  end
-
-  lower = percentage(findcase(string, /[a-z]/), total_length)
-  upper = percentage(findcase(string, /[A-Z]/), total_length)
-
-  puts ('lowercase: ' + lower + ' uppercase: ' + upper)
+  puts LettercasePercentageRatio.new(line.strip.split(''))
 end
