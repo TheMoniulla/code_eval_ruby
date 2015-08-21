@@ -1,12 +1,24 @@
-File.open('input.txt').each_line do |line|
-  numbers = line.scan(/-?\d+/)
-
-  def distance(numbers, index_1, index_2)
-    numbers[index_1].to_i - numbers[index_2].to_i
+class DistanceCalculation < Struct.new(:x1, :y1, :x2, :y2)
+  def distance
+    vector_z.to_i
   end
 
-  x = distance(numbers, 0, 2)
-  y = distance(numbers, 1, 3)
+  private
 
-  puts Math.sqrt((x**2) + (y**2)).to_i
+  def vector_z
+    Math.sqrt((vector_x**2) + (vector_y**2))
+  end
+
+  def vector_x
+    x1 - x2
+  end
+
+  def vector_y
+    y1 - y2
+  end
+end
+
+File.open('input.txt').each_line do |line|
+  input = line.scan(/-?\d+/).map(&:to_i)
+  puts DistanceCalculation.new(*input).distance
 end
